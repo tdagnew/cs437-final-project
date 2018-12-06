@@ -21,7 +21,7 @@ class Bullet(pygame.sprite.Sprite):
 		self.dx = 0
 		self.dy = 0
 		self.ddy = 0
-		self.speedScalar = 18
+		self.speedScalar = 20
 		self.screen = screen
 		self.player = player
 		self.ball = ball
@@ -33,8 +33,8 @@ class Bullet(pygame.sprite.Sprite):
 		 return self.isFired
 
 	def fire(self, deg):
-		self.x = self.player.rect.centerx + 10
-		self.y = self.player.rect.centery
+		self.x = self.player.rect.centerx
+		self.y = self.player.rect.centery - 5
 		self.dx = self.speedScalar*math.cos(deg)
 		self.dy =self.speedScalar*math.sin(deg)
 		self.isFired = True
@@ -82,7 +82,7 @@ class Bullet(pygame.sprite.Sprite):
 
 	def checkRelevance(self):
 		if(self.isFired == False):
-			self.rect.center = (self.player.x, self.player.y)
+			self.rect.center = (self.player.x, self.player.y-5)
 
 	def update(self):
 		self.checkBallHit()
