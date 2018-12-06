@@ -14,7 +14,8 @@ class Ball(pygame.sprite.Sprite):
 		self.image = self.image.convert_alpha()
 		self.width = BALL_WIDTH
 		self.height = BALL_HEIGHT
-		self.radius = self.width/2
+		self.size = self.width
+		self.radiun = self.width/2
 		self.image = pygame.transform.scale(self.image, (self.size,self.size))
 		self.rect = self.image.get_rect()
 		self.radius = self.size / 2
@@ -82,13 +83,13 @@ class Ball(pygame.sprite.Sprite):
 		new_dx = unitVec[0] * 4
 		new_dy = unitVec[1] * -3
 		if (0 < self.dy):     #if ball is falling
-            self.dx += new_dx
-            self.dy = -new_dy    #start go up
-            self.isFalling = True
-        elif (self.dy <= 0):   #if ball is going up
-            self.dx += new_dx
-            self.dy -= new_dy    #go up faster
-            self.isFalling = True
+			self.dx += new_dx
+			self.dy = -new_dy    #start go up
+			self.isFalling = True
+		elif (self.dy <= 0):   #if ball is going up
+			self.dx += new_dx
+			self.dy -= new_dy    #go up faster
+			self.isFalling = True
 
 	def checkGravity(self):
 		if (self.isFalling == True):

@@ -53,16 +53,16 @@ class Bullet(pygame.sprite.Sprite):
 				self.isFired = False
 
 	def checkBallHit(self):
-		if(self.isFired)
+		if(self.isFired):
 			dx = self.rect.centerx - self.ball.rect.centerx
-	        dy = self.rect.centery - self.ball.rect.centery
-	        mag = math.sqrt(((dx**2)+(dy**2)))
+			dy = self.rect.centery - self.ball.rect.centery
+			mag = math.sqrt(((dx**2)+(dy**2)))
 			if(mag <= self.ball.radius):
 				self.isFired = False
 				try:
-            		unitVec = (dx/mag, dy/mag)
-        		except: #in the case the user clicks on the topmid and divide by zero
-            		unitVec = (0, -1)
+					unitVec = (dx/mag, dy/mag)
+				except: #in the case the user clicks on the topmid and divide by zero
+					unitVec = (0, -1)
 				self.ball.addForce(unitVec)
 
 	def checkGravity(self):
@@ -74,9 +74,8 @@ class Bullet(pygame.sprite.Sprite):
 	def updateSpeed(self):
 		if(isFired):
 			self.x += self.dx
-
-	        self.y += self.dy
-	        self.dy += self.ddy
+			self.y += self.dy
+			self.dy += self.ddy
 
 	def update(self):
 		self.checkHitBounds()

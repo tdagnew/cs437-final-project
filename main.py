@@ -13,7 +13,7 @@ pygame.init()
 def main():
 	screen = pygame.display.set_mode((1600,900),pygame.RESIZABLE)
 	pygame.display.set_caption("Tank Volleyball")
-	
+
 	background = pygame.Surface(screen.get_size())
 	background = background.convert()
 	background.fill((255, 255, 255))
@@ -22,8 +22,8 @@ def main():
 	#create planet and players
 	ball = Ball(screen)
 
-	player1 = Player(screen, 1)
-	player2 = Player(screen, 2)
+	player1 = Player(screen, ball, 1)
+	player2 = Player(screen, ball,  2)
 
 	#group sprites
 	ballSprite = pygame.sprite.Group(ball)
@@ -38,13 +38,13 @@ def main():
 				keepGoing = False
 			if event.type == pygame.VIDEORESIZE:
 				screen = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
-		
+
 		screen.blit(background, (0, 0))
-		
+
 		#clear sprites
 		ballSprite.clear(screen, background)
 		playerSprites.clear(screen, background)
-		
+
 		#update sprites
 		ballSprite.update()
 		playerSprites.update()
@@ -52,7 +52,7 @@ def main():
 		#draw sprites
 		ballSprite.draw(screen)
 		playerSprites.draw(screen)
-		
+
 		pygame.display.flip()
 
 if __name__ == "__main__":
