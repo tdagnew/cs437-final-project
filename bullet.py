@@ -81,7 +81,12 @@ class Bullet(pygame.sprite.Sprite):
 	def update(self):
 		self.checkHitBounds()
 		self.updateSpeed()
-		self.rect.center = (self.x, self.y)
+		self.checkBallHit()
+		if(isFired):
+			self.rect.center = (self.x, self.y)
+		else:
+			#dead bullets go here
+			self.rect.center = (-100, -100)
 
 		# dy = tBall.y - reticle.y;
 		# dx = tBall.x - reticle.x;
