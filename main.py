@@ -38,7 +38,7 @@ def main():
 				keepGoing = False
 			if event.type == pygame.VIDEORESIZE:
 				screen = pygame.display.set_mode((event.w, event.h),pygame.RESIZABLE)
-
+		#put key events here
 		screen.blit(background, (0, 0))
 
 		#clear sprites
