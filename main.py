@@ -8,6 +8,7 @@ import pygame
 from ball import Ball
 from player import Player
 from bullet import Bullet
+from turret import Turret
 
 pygame.init()
 
@@ -25,6 +26,8 @@ def main():
 	#create players and ball
 	player1 = Player(screen, 1)
 	player2 = Player(screen, 2)
+	turret1 = Turret(player1)
+	turret2 = Turret(player2)
 	print("Players have been created.")
 
 	ball = Ball(screen, player1, player2, "PAUSED")
@@ -46,6 +49,7 @@ def main():
 	#group sprites
 	ballSprite = pygame.sprite.Group(ball)
 	playerSprites = pygame.sprite.Group(player1,player2)
+	turretSprites = pygame.sprite.Group(turret1,turret2)
 	p1BulletSprites = pygame.sprite.Group()
 	p2BulletSprites = pygame.sprite.Group()
 
@@ -108,6 +112,7 @@ def main():
 
 		#update sprites
 		ballSprite.update()
+		turretSprites.update()
 		playerSprites.update()
 		p1BulletSprites.update()
 		p2BulletSprites.update()
@@ -117,6 +122,7 @@ def main():
 		p1BulletSprites.draw(screen)
 		p2BulletSprites.draw(screen)
 		playerSprites.draw(screen)
+		turretSprites.draw(screen)
 
 		scoreline = "Player 1: {0} Player 2: {1}".format(player1.score, player2.score)
 

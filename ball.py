@@ -95,7 +95,7 @@ class Ball(pygame.sprite.Sprite):
 
 	def checkGravity(self):
 		if (self.isFalling == True):
-			self.ddy = .12
+			self.ddy = .10
 		else:
 			self.ddy = 0
 

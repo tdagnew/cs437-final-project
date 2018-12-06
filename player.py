@@ -3,8 +3,9 @@ import pygame
 import random
 import math
 from bullet import Bullet
+from turret import Turret
 
-PLAYER_IMAGE = "tank.png"
+PLAYER_IMAGE = "tank_bottom.png"
 PLAYER_WIDTH = 100
 PLAYER_HEIGHT = 66
 
@@ -77,9 +78,9 @@ class Player(pygame.sprite.Sprite):
 				self.x -= self.moveSpeed
 			if keys[pygame.K_d]:
 				self.x += self.moveSpeed
-			if keys[pygame.K_w] and self.shotAngle < -math.pi/2:
+			if keys[pygame.K_w] and abs(self.shotAngle) < math.pi/2:
 				self.shotAngle -= .07
-			if keys[pygame.K_s] and self.shotAngle < 0.25:
+			if keys[pygame.K_s] and self.shotAngle < 0:
 				self.shotAngle += .07
 			if keys[pygame.K_SPACE]:
 				self.fire()
@@ -95,7 +96,6 @@ class Player(pygame.sprite.Sprite):
 				self.shotAngle -= .07
 			if keys[pygame.K_RCTRL]:
 				self.fire()
-			print("Shot Angle: {}".format(self.shotAngle))
 
 	def checkBounds(self):
 		#ensure player is always on ground
