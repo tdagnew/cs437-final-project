@@ -34,12 +34,28 @@ class Player(pygame.sprite.Sprite):
 		self.bullet = Bullet(self.screen, self, self.ball)
 
 		self.rect.center = (self.x, self.y)
+		#for key events
+		self.justPressed = True
 
 	def fire(self):
 		self.bullet.fire(self.shotAngle)
 
 	def checkKeys(self):
 		keys = pygame.key.get_pressed()
+		for event in pygame.event.get():
+			if (event == pygame.KEYDOWN):
+				if self.number == 1:
+					if(event.key == pygame.K_SPACE):
+						self.fire()
+						print("fire")
+
+				if self.number == 2:
+					if(event.key == pygame.K_RCTRL):
+						self.fire()
+						print("fire")
+
+
+
 
 		if self.number == 1:
 			if keys[pygame.K_a]:
@@ -50,8 +66,7 @@ class Player(pygame.sprite.Sprite):
 				self.shotAngle += 1
 			if keys[pygame.K_d] and self.shotAngle > 0:
 				self.shotAngle -= 1
-			if keys[pygame.K_SPACE]:
-				self.fire()
+
 		if self.number == 2:
 			if keys[pygame.K_LEFT]:
 				self.x -= self.moveSpeed
@@ -61,8 +76,6 @@ class Player(pygame.sprite.Sprite):
 				self.shotAngle += 1
 			if keys[pygame.K_DOWN] and self.shotAngle > 0:
 				self.shotAngle -= 1
-			if keys[pygame.K_RCTRL]:
-				self.fire()
 
 	def checkBounds(self):
 		#ensure player is always on ground
