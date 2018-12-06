@@ -61,6 +61,10 @@ class Bullet(pygame.sprite.Sprite):
 			mag = math.sqrt(((dx**2)+(dy**2)))
 			#print("CheckBallHit mag to ball {}".format(mag))
 			if(mag <= self.ball.radius):
+				#sound effect
+				hitSound = pygame.mixer.Sound("ballHit.wav")
+				hitSound.play()
+				
 				self.isFired = False
 				try:
 					unitVec = (dx/mag, dy/mag)

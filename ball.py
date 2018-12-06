@@ -3,7 +3,7 @@ import pygame
 import random
 import math
 
-BALL_IMAGE = "ball.png"
+BALL_IMAGE = "tball.png"
 BALL_WIDTH = 75
 BALL_HEIGHT = 75
 
@@ -110,7 +110,11 @@ class Ball(pygame.sprite.Sprite):
 			self.dx = 0
 			self.dy = 0
 			self.isFalling = False
-
+			
+			#sound effect
+			pointSound = pygame.mixer.Sound("pointScored.wav")
+			pointSound.play()
+			
 			#add score
 			if self.x > (self.screen.get_width() / 2):
 				self.player1.score += 1

@@ -13,8 +13,8 @@ from divider import Divider
 
 pygame.init()
 
-def main():
-	screen = pygame.display.set_mode((800,400),pygame.RESIZABLE)
+def main(width, height):
+	screen = pygame.display.set_mode((width,height),pygame.RESIZABLE)
 	pygame.display.set_caption("Tankball!")
 
 	background = pygame.Surface(screen.get_size())
@@ -22,13 +22,12 @@ def main():
 	background.fill((255, 255, 255))
 	screen.blit(background, (0, 0))
 
-	# divider = pygame.Surface((4, 70))
-	# divider = divider.convert()
-	# divider.fill((0, 0, 0))
-	# screen.blit(divider, (screen.get_width() / 2 - 2, screen.get_height() - 70))
-
 	state = "PAUSED"
 
+	#sound effect
+	victorySound = pygame.mixer.Sound("victory.wav")
+	victoryPlayed = False
+	
 	#create players and ball
 	player1 = Player(screen, 1)
 	player2 = Player(screen, 2)
@@ -68,10 +67,12 @@ def main():
 	#UI
 	title_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 10)).render("Tankball!", True, pygame.color.Color("Black"))
 
-	pause_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 20)).render("Paused", True, pygame.color.Color("Red"))
+	pause_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 20)).render("Paused (Return/P)", True, pygame.color.Color("Red"))
 
 	controls_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("Controls", True, pygame.color.Color("Red"))
 
+	unpause_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("Return or P - Pause/Unpause", True, pygame.color.Color("Red"))
+	
 	move_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("A/D or Left/Right - Move", True, pygame.color.Color("Red"))
 
 	aim_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("W/S or Up/Down - Aim", True, pygame.color.Color("Red"))
@@ -96,6 +97,10 @@ def main():
 				background = pygame.Surface(screen.get_size())
 				background = background.convert()
 				background.fill((255, 255, 255))
+				
+				#recenter ball
+				ball.x = screen.get_width() / 2
+				ball.y = screen.get_height() / 3
 
 				#resize UI
 				title_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 10)).render("Tankball!", True, pygame.color.Color("Black"))
@@ -104,6 +109,8 @@ def main():
 
 				controls_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("Controls", True, pygame.color.Color("Red"))
 
+				unpause_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("Return or P - Pause/Unpause", True, pygame.color.Color("Red"))
+				
 				move_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("A/D or Left/Right - Move", True, pygame.color.Color("Red"))
 
 				aim_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("W/S or Up/Down - Aim", True, pygame.color.Color("Red"))
@@ -135,10 +142,9 @@ def main():
 				#r key
 				if event.key == 114:
 					if state == "END":
-						return True
+						return True, screen.get_width(), screen.get_height()
 
 		screen.blit(background, (0, 0))
-		#screen.blit(divider, (screen.get_width() / 2, screen.get_height() - 70))
 
 		#clear sprites
 		ballSprite.clear(screen, background)
@@ -159,6 +165,7 @@ def main():
 		p2BulletSprites.draw(screen)
 		playerSprites.draw(screen)
 		turretSprites.draw(screen)
+		uiSprites.draw(screen)
 
 		score_text1 = pygame.font.SysFont('Consolas', int(screen.get_width() / 10)).render("{0}".format(player1.score), True, pygame.color.Color("Black"))
 		score_text2 = pygame.font.SysFont('Consolas', int(screen.get_width() / 10)).render("{0}".format(player2.score), True, pygame.color.Color("Black"))
@@ -166,13 +173,15 @@ def main():
 		screen.blit(score_text1, (0, 0))
 		screen.blit(score_text2, (screen.get_width() - score_text2.get_width(), 0))
 		if state == "PAUSED":
-			screen.blit(title_text, (screen.get_width() / 2 - (title_text.get_width() / 2), (screen.get_height() / 10) - (title_text.get_height() / 2)))
+			screen.blit(title_text, (screen.get_width() / 2 - (title_text.get_width() / 2), 0))
 
 			offset = score_text1.get_height()
 			screen.blit(pause_text, (0, offset))
 			offset += pause_text.get_height()
 			screen.blit(controls_text, (0, offset))
 			offset += controls_text.get_height()
+			screen.blit(unpause_text, (0, offset))
+			offset += unpause_text.get_height()
 			screen.blit(move_text, (0, offset))
 			offset += move_text.get_height()
 			screen.blit(aim_text, (0, offset))
@@ -182,6 +191,10 @@ def main():
 		if player1.score >= 5:
 			screen.blit(win_text1, ((screen.get_width() / 2) - (win_text1.get_width() / 2), (screen.get_height() / 2) - (win_text1.get_height() / 2)))
 
+			if victoryPlayed == False:
+				victorySound.play()
+				victoryPlayed = True
+			
 			for ball in ballSprite.sprites():
 				ball.pause()
 			for player in playerSprites.sprites():
@@ -191,6 +204,10 @@ def main():
 		elif player2.score >= 5:
 			screen.blit(win_text2, ((screen.get_width() / 2) - (win_text2.get_width() / 2), (screen.get_height() / 2) - (win_text2.get_height() / 2)))
 
+			if victoryPlayed == False:
+				victorySound.play()
+				victoryPlayed = True
+			
 			for ball in ballSprite.sprites():
 				ball.pause()
 			for player in playerSprites.sprites():
@@ -200,10 +217,10 @@ def main():
 
 		pygame.display.flip()
 
-	return False
+	return False, 0, 0
 
 if __name__ == "__main__":
-	replay = main()
+	replay, width, height = main(800, 400)
 
 	while replay == True:
-		replay = main()
+		replay, width, height = main(width, height)

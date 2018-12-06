@@ -52,6 +52,9 @@ class Player(pygame.sprite.Sprite):
 		print("Player {} fired a bullet.".format(self.number))
 		for i in range(1):
 			if(self.bullets[i].getIsFired()==False):
+				shotSound = pygame.mixer.Sound("bulletShot.wav")
+				shotSound.play()
+			
 				#first bullet not fired
 				self.bullets[i].fire(self.shotAngle)
 				break
