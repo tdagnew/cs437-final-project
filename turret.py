@@ -1,14 +1,14 @@
 #turret.py
 import pygame
 
-#TURRET_IMAGE = "images/"
+TURRET_IMAGE = "tank_top.png"
 
 class Turret(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, player):
         pygame.sprite.Sprite.__init__(self)
-        #self.image = pygame.image.load(TURRET_IMAGE)
-        #self.image = self.image.convert_alpha()
-        #self.rect = self.image.get_rect()
+        self.image = pygame.image.load(TURRET_IMAGE)
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
         self.x = 0
         self.y = 0
 
