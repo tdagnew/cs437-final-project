@@ -8,7 +8,7 @@ BULLET_WIDTH = 56
 BULLET_HEIGHT = 56
 
 class Bullet(pygame.sprite.Sprite):
-	def __init__(self, player):
+	def __init__(self, screen, player):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load(BULLET_IMAGE)
 		self.image = self.image.convert_alpha()
@@ -19,29 +19,61 @@ class Bullet(pygame.sprite.Sprite):
 		self.y = 0
 		self.dx = 0
 		self.dy = 0
-		self.rect.center = (self.x, self.y)
-		
+		self.ddy = 0
+		self.speedScalar = 3
+		self.screen = screen
 		self.player = player
+		self.rect.center = (self.x, self.y)
+
 		self.isFired = False
-		
-	def fire(self, shotAngle):
-		self.x = self.player.x
-		self.y = self.player.y
-		
-		#self.dx = 
-		
+
+	def fire(self, deg):
+		self.x = self.player.rect.centerx + 10
+		self.y = self.player.rect.centery
+		self.dx = self.speedScalar*math.cos(deg)
+		self.dy =self.speedScalar*math.sin(deg)
 		self.isFired = True
-		
 		print("fire")
 
+	def checkHitBounds(self):
+		if(self.isFired):
+			#only checking alive bullets
+			if(self.rect.centery > self.screen.get_height):
+				#in the floor
+				self.isFired = False
+			if(0 > self.rect.centery):
+				#in the ceiling
+				self.isFired = False
+			if(self.rect.centerx > self.screen.get_width):
+				#in the right wall
+				self.isFired = False
+			if(0 > self.rect.centerx):
+				#in the left wall
+				self.isFired = False
+
+	def checkGravity(self):
+		if(self.isFired):
+			ddy = 1
+		else:
+			ddy = 0
+
+	def updateSpeed(self):
+		if(isFired):
+			self.x += self.dx
+
+	        self.y += self.dy
+	        self.dy += self.ddy
+
 	def update(self):
+		self.checkHitBounds()
+		self.updateSpeed()
 		self.rect.center = (self.x, self.y)
 
 		# dy = tBall.y - reticle.y;
-		# dx = tBall.x - reticle.x; 
+		# dx = tBall.x - reticle.x;
 		# theta = Math.atan2(dy, dx);	//angle in radians
 		# angle = theta * 180 / Math.PI;	//angle in degrees
-		
+
 		# this.show();
 		# this.setMoveAngle(angle - 90);	//-90 to change angle to traditional degrees system
 		# this.setSpeed(10);
