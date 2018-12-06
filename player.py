@@ -9,7 +9,7 @@ PLAYER_WIDTH = 100
 PLAYER_HEIGHT = 66
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self, screen, ball, number):
+	def __init__(self, screen, number):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load(PLAYER_IMAGE)
 		self.image = self.image.convert_alpha()
@@ -17,21 +17,22 @@ class Player(pygame.sprite.Sprite):
 		self.height = PLAYER_HEIGHT
 		self.rect = self.image.get_rect()
 
+		self.state = "PAUSED"
 		self.screen = screen
-		self.ball = ball
 		self.number = number
+		self.score = 0
 
 		if (self.number == 1):
-			self.x = 400
-			self.y = 900
+			self.x = self.screen.get_width() / 4
+			self.y = self.screen.get_height()
 			self.image = pygame.transform.flip(self.image, True, False)
 		else:
-			self.x = 1200
-			self.y = 900
+			self.x = (self.screen.get_width() / 4) * 3
+			self.y = self.screen.get_height()
 
 		self.moveSpeed = 10
 		self.shotAngle = 0
-		self.bullet = Bullet(self.screen, self, self.ball)
+		self.bullet = Bullet(self)
 
 		self.rect.center = (self.x, self.y)
 		#for key events
@@ -97,8 +98,16 @@ class Player(pygame.sprite.Sprite):
 		elif self.number == 2 and self.x - (self.width / 2) < (self.screen.get_width() / 2):
 			self.x = (self.screen.get_width() / 2) + (self.width / 2)
 
+	def pause(self):
+		self.state = "PAUSED"
+
+	def unpause(self):
+		self.state = "RUNNING"
+
 	def update(self):
-		self.checkKeys()
+		if self.state == "RUNNING":
+			self.checkKeys()
+
 		self.checkBounds()
 
 		self.rect.center = (self.x, self.y)
