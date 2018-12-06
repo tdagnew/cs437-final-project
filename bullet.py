@@ -8,7 +8,7 @@ BULLET_WIDTH = 56
 BULLET_HEIGHT = 56
 
 class Bullet(pygame.sprite.Sprite):
-	def __init__(self, screen, player):
+	def __init__(self, screen, player, ball):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load(BULLET_IMAGE)
 		self.image = self.image.convert_alpha()
@@ -23,6 +23,7 @@ class Bullet(pygame.sprite.Sprite):
 		self.speedScalar = 3
 		self.screen = screen
 		self.player = player
+		self.ball = ball
 		self.rect.center = (self.x, self.y)
 
 		self.isFired = False
@@ -50,6 +51,19 @@ class Bullet(pygame.sprite.Sprite):
 			if(0 > self.rect.centerx):
 				#in the left wall
 				self.isFired = False
+
+	def checkBallHit(self):
+		if(self.isFired)
+			dx = self.rect.centerx - self.ball.rect.centerx
+	        dy = self.rect.centery - self.ball.rect.centery
+	        mag = math.sqrt(((dx**2)+(dy**2)))
+			if(mag <= self.ball.radius):
+				self.isFired = False
+				try:
+            		unitVec = (dx/mag, dy/mag)
+        		except: #in the case the user clicks on the topmid and divide by zero
+            		unitVec = (0, -1)
+				self.ball.addForce(unitVec)
 
 	def checkGravity(self):
 		if(self.isFired):
