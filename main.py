@@ -82,6 +82,8 @@ def main(width, height):
 	win_text1 = pygame.font.SysFont('Consolas', int(screen.get_width() / 20)).render("Player 1 wins!", True, pygame.color.Color("Black"))
 
 	win_text2 = pygame.font.SysFont('Consolas', int(screen.get_width() / 20)).render("Player 2 wins!", True, pygame.color.Color("Black"))
+	
+	restart_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("R to Restart", True, pygame.color.Color("Black"))
 
 	clock = pygame.time.Clock()
 	print("Clock set.")
@@ -120,6 +122,9 @@ def main(width, height):
 				win_text1 = pygame.font.SysFont('Consolas', int(screen.get_width() / 20)).render("Player 1 wins!", True, pygame.color.Color("Black"))
 
 				win_text2 = pygame.font.SysFont('Consolas', int(screen.get_width() / 20)).render("Player 2 wins!", True, pygame.color.Color("Black"))
+				
+				restart_text = pygame.font.SysFont('Consolas', int(screen.get_width() / 40)).render("R to Restart", True, pygame.color.Color("Black"))
+				
 			if event.type == pygame.KEYDOWN:
 				#return key or p key (ascii)
 				if event.key == 13 or event.key == 112:
@@ -190,6 +195,7 @@ def main(width, height):
 
 		if player1.score >= 5:
 			screen.blit(win_text1, ((screen.get_width() / 2) - (win_text1.get_width() / 2), (screen.get_height() / 2) - (win_text1.get_height() / 2)))
+			screen.blit(restart_text, ((screen.get_width() / 2) - (restart_text.get_width() / 2), (screen.get_height() / 2) + win_text1.get_height()))
 
 			if victoryPlayed == False:
 				victorySound.play()
@@ -203,6 +209,7 @@ def main(width, height):
 			state = "END"
 		elif player2.score >= 5:
 			screen.blit(win_text2, ((screen.get_width() / 2) - (win_text2.get_width() / 2), (screen.get_height() / 2) - (win_text2.get_height() / 2)))
+			screen.blit(restart_text, ((screen.get_width() / 2) - (restart_text.get_width() / 2), (screen.get_height() / 2) + win_text2.get_height()))
 
 			if victoryPlayed == False:
 				victorySound.play()
