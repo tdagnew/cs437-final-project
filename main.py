@@ -31,10 +31,10 @@ def main():
 	print("Ball has been created.")
 
 	#create bullets
-	p1Bullets = [None]*5
-	p2Bullets = [None]*5
+	p1Bullets = [None]*1
+	p2Bullets = [None]*1
 
-	for i in range(5):
+	for i in range(1):
 		p1Bullets[i] = Bullet(screen,player1,ball)
 		p2Bullets[i] = Bullet(screen,player2,ball)
 	print("Populated list of bullets.")
@@ -49,7 +49,7 @@ def main():
 	p1BulletSprites = pygame.sprite.Group()
 	p2BulletSprites = pygame.sprite.Group()
 
-	for i in range(5):
+	for i in range(1):
 		p1BulletSprites.add(p1Bullets[i])
 		p2BulletSprites.add(p2Bullets[i])
 
@@ -114,9 +114,9 @@ def main():
 
 		#draw sprites
 		ballSprite.draw(screen)
-		playerSprites.draw(screen)
 		p1BulletSprites.draw(screen)
 		p2BulletSprites.draw(screen)
+		playerSprites.draw(screen)
 
 		scoreline = "Player 1: {0} Player 2: {1}".format(player1.score, player2.score)
 

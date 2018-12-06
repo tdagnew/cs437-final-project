@@ -4,8 +4,8 @@ import random
 import math
 
 BULLET_IMAGE = "bullet.png"
-BULLET_WIDTH = 40
-BULLET_HEIGHT = 40
+BULLET_WIDTH = 20
+BULLET_HEIGHT = 20
 
 class Bullet(pygame.sprite.Sprite):
 	def __init__(self, screen, player, ball):
@@ -21,7 +21,7 @@ class Bullet(pygame.sprite.Sprite):
 		self.dx = 0
 		self.dy = 0
 		self.ddy = 0
-		self.speedScalar = 10
+		self.speedScalar = 18
 		self.screen = screen
 		self.player = player
 		self.ball = ball
@@ -37,30 +37,29 @@ class Bullet(pygame.sprite.Sprite):
 		self.y = self.player.rect.centery
 		self.dx = self.speedScalar*math.cos(deg)
 		self.dy =self.speedScalar*math.sin(deg)
-		print("Fired at {} and {} with a speed of {} and {}".format(self.x,self.y,self.dx,self.dy))
 		self.isFired = True
 
 	def checkHitBounds(self):
-		if(self.isFired):
-			#only checking alive bullets
-			if(self.rect.centery > self.screen.get_height()):
-				#in the floor
-				self.isFired = False
-			if(0 > self.rect.centery):
-				#in the ceiling
-				self.isFired = False
-			if(self.rect.centerx > self.screen.get_width()):
-				#in the right wall
-				self.isFired = False
-			if(0 > self.rect.centerx):
-				#in the left wall
-				self.isFired = False
+		#only checking alive bullets
+		if(self.rect.centery > self.screen.get_height()):
+			#in the floor
+			self.isFired = False
+		if(0 > self.rect.centery):
+			#in the ceiling
+			self.isFired = False
+		if(self.rect.centerx > self.screen.get_width()):
+			#in the right wall
+			self.isFired = False
+		if(0 > self.rect.centerx):
+			#in the left wall
+			self.isFired = False
 
 	def checkBallHit(self):
-		if(self.isFired):
+		if(self.isFired == True):
 			dx = self.rect.centerx - self.ball.rect.centerx
 			dy = self.rect.centery - self.ball.rect.centery
 			mag = math.sqrt(((dx**2)+(dy**2)))
+			#print("CheckBallHit mag to ball {}".format(mag))
 			if(mag <= self.ball.radius):
 				self.isFired = False
 				try:
@@ -81,8 +80,13 @@ class Bullet(pygame.sprite.Sprite):
 			self.y += self.dy
 			self.dy += self.ddy
 
+	def checkRelevance(self):
+		if(self.isFired == False):
+			self.rect.center = (self.player.x, self.player.y)
+
 	def update(self):
+		self.checkBallHit()
 		self.checkHitBounds()
 		self.updateSpeed()
-		self.checkBallHit()
 		self.rect.center = (self.x, self.y)
+		self.checkRelevance()

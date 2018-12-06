@@ -31,8 +31,11 @@ class Player(pygame.sprite.Sprite):
 			self.y = self.screen.get_height()
 
 		self.moveSpeed = 10
-		self.shotAngle = 0
-		self.bullets = []*5
+		if(self.number == 1):
+			self.shotAngle = 0
+		elif(self.number == 2):
+			self.shotAngle = math.pi
+		self.bullets = []*1
 
 		self.rect.center = (self.x, self.y)
 		#for key events
@@ -46,7 +49,7 @@ class Player(pygame.sprite.Sprite):
 	def fire(self):
 		'''this is only called to fire a bullet'''
 		print("Player {} fired a bullet.".format(self.number))
-		for i in range(5):
+		for i in range(1):
 			if(self.bullets[i].getIsFired()==False):
 				#first bullet not fired
 				self.bullets[i].fire(self.shotAngle)
@@ -74,25 +77,25 @@ class Player(pygame.sprite.Sprite):
 				self.x -= self.moveSpeed
 			if keys[pygame.K_d]:
 				self.x += self.moveSpeed
-			if keys[pygame.K_w] and self.shotAngle < 90:
-				self.shotAngle += 1
-			if keys[pygame.K_d] and self.shotAngle > 0:
-				self.shotAngle -= 1
+			if keys[pygame.K_w] and self.shotAngle < -math.pi/2:
+				self.shotAngle -= .07
+			if keys[pygame.K_s] and self.shotAngle < 0.25:
+				self.shotAngle += .07
 			if keys[pygame.K_SPACE]:
 				self.fire()
-
 
 		if self.number == 2:
 			if keys[pygame.K_LEFT]:
 				self.x -= self.moveSpeed
 			if keys[pygame.K_RIGHT]:
 				self.x += self.moveSpeed
-			if keys[pygame.K_UP] and self.shotAngle < 90:
-				self.shotAngle += 1
-			if keys[pygame.K_DOWN] and self.shotAngle > 0:
-				self.shotAngle -= 1
-				if keys[pygame.K_RCTRL]:
-					self.fire()
+			if keys[pygame.K_UP] and abs(self.shotAngle) < 3*math.pi/2:
+				self.shotAngle += .07
+			if keys[pygame.K_DOWN] and abs(self.shotAngle) > math.pi:
+				self.shotAngle -= .07
+			if keys[pygame.K_RCTRL]:
+				self.fire()
+			print("Shot Angle: {}".format(self.shotAngle))
 
 	def checkBounds(self):
 		#ensure player is always on ground
